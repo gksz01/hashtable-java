@@ -35,24 +35,43 @@ public class Main {
         boolean found2 = hash2.search(searchName);
         long endSearch2 = System.nanoTime();
 
-        // Relatorio que vai ser exibido no CMD
         System.out.println("\n===== RELATÓRIO FINAL =====");
         System.out.println("Total de nomes: " + names.length);
 
-        System.out.println("\n[Tabela 1 - Hash Modulo]");
-        System.out.println("Colisões: " + hash1.getCollisions());
-        System.out.println("Tempo de inserção: " + (endInsert1 - startInsert1) / 1_000_000.0 + " ms");
-        System.out.println("Tempo de busca: " + (endSearch1 - startSearch1) / 1_000_000.0 + " ms");
-        System.out.println("Encontrou \"" + searchName + "\": " + found1);
-        hash1.printDistribution();
+        logHashTableResults(
+                "Hash Módulo",
+                hash1,
+                endInsert1 - startInsert1,
+                endSearch1 - startSearch1,
+                searchName,
+                found1
+        );
 
-        System.out.println("\n[Tabela 2 - Hash Multiplicação]");
-        System.out.println("Colisões: " + hash2.getCollisions());
-        System.out.println("Tempo de inserção: " + (endInsert2 - startInsert2) / 1_000_000.0 + " ms");
-        System.out.println("Tempo de busca: " + (endSearch2 - startSearch2) / 1_000_000.0 + " ms");
-        System.out.println("Encontrou \"" + searchName + "\": " + found2);
-        hash2.printDistribution();
+        logHashTableResults(
+                "Hash Multiplicação",
+                hash2,
+                endInsert2 - startInsert2,
+                endSearch2 - startSearch2,
+                searchName,
+                found2
+        );
 
         System.out.println("\nPrograma finalizado com sucesso.");
+    }
+
+    private static void logHashTableResults(
+            String tableName,
+            HashTable table,
+            long insertTime,
+            long searchTime,
+            String searchName,
+            boolean found
+    ) {
+        System.out.println("\n[Tabela - " + tableName + "]");
+        System.out.println("Colisões: " + table.getCollisions());
+        System.out.println("Tempo de inserção: " + (insertTime / 1_000_000.0) + " ms");
+        System.out.println("Tempo de busca: " + (searchTime / 1_000_000.0) + " ms");
+        System.out.println("Encontrou \"" + searchName + "\": " + found);
+        table.printDistribution();
     }
 }
